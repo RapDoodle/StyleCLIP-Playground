@@ -1,3 +1,18 @@
+# Microsoft Word
+~$*
+
+
+pretrained/
+static/contents
+security/
+web/
+data.db
+test.db
+log.txt
+
+# IDE specific
+.vscode/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+{% block title %}My Tasks{% endblock %}
+
+{% block content %}
+{% block inner_content %}
+{% endblock %}
+<div class="row">
+  <div class="col" id="location">
+    <span>
+      <p style="font-weight:bold">My Tasks</p>
+    </span>
+  </div>
+</div>
+<button type="button" class="btn btn-light" data-toggle="modal" data-target=".add-course">
+  <i class="fa fa-plus"></i>
+</button>
+<span>New task</span>
+<br><br>
+<table class="table table-bordered table-striped table-hover">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Task Type</th>
+      <th>Time Created</th>
+      <th>Task Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for task in data['tasks'] %}
+    <tr>
+      <td><a style="color:#7987cb;" href="{{ url_for('task_info.info', task_id=task.id) }}">{{task.task_title}}</a></td>
+      <td>{{task.get_task_type_string()}}</td>
+      <td>{{task.get_time_created_local_time()}}</td>
+      <td>{{task.get_task_status_string()}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-12">
+    <nav aria-label="pagination">
+      <ul class="pagination justify-content-center">
+        {% for page in data['pages'] %}
+        {% if page == 'None' %}
+        <li class="page-item disabled">
+          <span class="page-link">
+            ...
+            <span class="sr-only">(current)</span>
+          </span>
+        </li>
+        {% elif page == data['current_page'] %}
+        <li class="page-item active">
+          <span class="page-link">
+            {{ page }}
+            <span class="sr-only">(current)</span>
+          </span>
+        </li>
+        {% else %}
+        <li class="page-item"><a class="page-link" href="{{ url_for('tasks.tasks', page=page) }}">{{ page }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </nav>
+  </div>
+</div>
+
+
+<div class="modal fade bd-example-modal-lg add-course" tabindex="-1" role="dialog" aria-labelledby="add-course"
+  aria-hidden="true" style="overflow:auto">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="myLargeModalLabel">New Task</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="row align-items-start" style="margin-bottom: 1%; margin-left: 1%; margin-right: 1%">
+          <div class="col-12">
+            <nav>
+              <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-01" role="tab"
+                  aria-controls="nav-01" aria-selected="true" onclick="taskType=1">Latent Vector</a>
+                <a class="nav-item nav-link" id="nav-02-tab" data-toggle="tab" href="#nav-02" role="tab"
+                  aria-controls="nav-02" aria-selected="false" onclick="taskType=2">Latent Mapper</a>
+                <a class="nav-item nav-link" id="nav-03-tab" data-toggle="tab" href="#nav-03" role="tab"
+                  aria-controls="nav-03" aria-selected="false" onclick="taskType=3">Global Direction</a>
+              </div>
+            </nav>
+            <div class="tab-content" id="nav-tabContent">
+              <!-- Option 1 -->
+              <div class="tab-pane fade show active" id="nav-01" role="tabpanel" aria-labelledby="nav-01-tab">
+                <div class="row no-gutters" style="margin-top: 5%;">
+                  <div class="col-sm-10" style="margin-left: 12%">
+                    <h5 class="text-center">Latent Vector</h5>
+                  </div>
+                  <div class="row" style="margin: 2.5%; margin-bottom: 0%;">
+                    <!-- Title -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Title</label>
+                      <input type="text" class="form-control" id="lv_task_title" name="lv_task_title" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="Untitled latent vector task">
+                    </div>
+                    <!-- Description -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Description</label>
+                      <input type="text" class="form-control" id="lv_description" name="lv_description" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="A person with purple hair">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label>Experiment Type</label>
+                      <select class="form-control" id="lv_experiment_type" name="lv_experiment_type">
+                        <option value="edit">Edit</option>
+                        <option value="free_generation">Free generation</option>
+                      </select>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label>Optimization steps</label>
+                      <input type="int" class="form-control" id="lv_optimization_steps" name="lv_optimization_steps"
+                        placeholder="" aria-label="" aria-describedby="basic-addon1" value="50">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label>L2 lambda</label>
+                      <input type="text" class="form-control" id="lv_l2_lambda" name="lv_l2_lambda" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="0.008">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label>Id Lambda</label>
+                      <input type="text" class="form-control" id="lv_id_lambda" name="lv_id_lambda" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="0.005">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label>Image</label>
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="lv_image" name="lv_image"
+                          onchange="encodeImageFileAsURL(this)">
+                        <label class="custom-file-label" for="lv_image">Choose file</label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <label>Random Seed</label>
+                      <input type="int" class="form-control" id="lv_random_seed" name="lv_random_seed" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="2">
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="lv_stylespace" id="lv_stylespace">
+                        <label class="form-check-label" for="stylespace_checkbox">
+                          Style Space
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12">
+                      <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="lv_create_video" id="lv_create_video">
+                        <label class="form-check-label" for="create_video_checkbox">
+                          Create Video
+                        </label>
+                      </div>
+                    </div>
+                    <div class="col-md-6 col-sm-12"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option 2 -->
+              <div class="tab-pane fade" id="nav-02" role="tabpanel" aria-labelledby="nav-02-tab">
+                <div class="row no-gutters" style="margin-top: 5%;">
+                  <div class="col-sm-10" style="margin-left: 12%">
+                    <h5 class="text-center">Latent Mapper</h5>
+                  </div>
+                  <div class="row" style="margin: 2.5%; margin-bottom: 0%;">
+                    <!-- Title -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Title</label>
+                      <input type="text" class="form-control" id="lm_task_title" name="lm_task_title" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="Untitled latent vector task">
+                    </div>
+
+                    <!-- Edit type -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Edit Type</label>
+                      <select class="form-control" id="lm_edit_type" name="lm_edit_type">
+                        <option value="afro">Afro</option>
+                        <option value="angry">Angry</option>
+                        <option value="Beyonce">Beyonce</option>
+                        <option value="bobcut">Bobcut</option>
+                        <option value="bowlcut">Bowlcut</option>
+                        <option value="curly hair">Curly hair</option>
+                        <option value="Hilary Clinton">Hilary Clinton</option>
+                        <option value="Jhonny Depp">Jhonny Depp</option>
+                        <option value="mohawk">Mohawk</option>
+                        <option value="purple hair">Purple Hair</option>
+                        <option value="surprised">Surprised</option>
+                        <option value="Taylor Swift">Taylor Swift</option>
+                        <option value="trump">Trump</option>
+                        <option value="Mark Zuckerberg">Mark Zuckerberg</option>
+                      </select>
+                    </div>
+
+                    <!-- Image -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Image</label>
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="lm_image" name="lm_image"
+                          onchange="encodeImageFileAsURL(this)">
+                        <label class="custom-file-label" for="lm_image">Choose file</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Option 3 -->
+              <div class="tab-pane fade" id="nav-03" role="tabpanel" aria-labelledby="nav-03-tab">
+                <div class="row no-gutters" style="margin-top: 5%;">
+                  <div class="col-sm-10" style="margin-left: 12%">
+                    <h5 class="text-center">Latent Mapper</h5>
+                  </div>
+                  <div class="row" style="margin: 2.5%; margin-bottom: 0%;">
+                    <!-- Title -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Title</label>
+                      <input type="text" class="form-control" id="gd_task_title" name="gd_task_title" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="Untitled global direction task">
+                    </div>
+
+                    <!-- Mode -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Edit Mode</label>
+                      <select class="form-control" id="gd_mode" name="gd_mode">
+                        <option value="real image">Real image</option>
+                        <option value="generated image">Generated image</option>
+                      </select>
+                    </div>
+
+                    <!-- Neutral -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Neutral text description</label>
+                      <input type="text" class="form-control" id="gd_neutral" name="gd_neutral" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="face with eyes">
+                    </div>
+
+                    <!-- Target -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Target text description</label>
+                      <input type="text" class="form-control" id="gd_target" name="gd_target" placeholder=""
+                        aria-label="" aria-describedby="basic-addon1" value="face with blue eyes">
+                    </div>
+
+                    <!-- Beta -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Beta (between 0.08 and 0.3)</label>
+                      <input type="range" class="form-control-range" id="gd_beta" name="gd_beta" min="0.08" max="0.3" step="0.01">
+                    </div>
+
+                    <!-- Alpha -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Alpha (between -10 and 10)</label>
+                      <input type="range" class="form-control-range" id="gd_alpha" name="gd_alpha" min="-10" max="10" step="0.1">
+                    </div>
+
+                    <!-- Image -->
+                    <div class="col-md-6 col-sm-12">
+                      <label>Image</label>
+                      <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="gd_image" name="gd_image"
+                          onchange="encodeImageFileAsURL(this)">
+                        <label class="custom-file-label" for="gd_image">Choose file</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-6 col-sm-12"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+        <!-- button area -->
+        <div class="row" style="margin: 2.5%;">
+          <div class="col" style="text-align: right;">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">
+              {{ get_str('CANCEL') }}
+            </button>
+            <button type="button" class="btn btn-primary" style="margin-left: 5px;" onclick="submitTask()">
+              {{ get_str('CONFIRM') }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  let taskType = 1
+  let imageBase64 = null
+
+  const encodeImageFileAsURL = (element) => {
+    var file = element.files[0];
+    var reader = new FileReader();
+    reader.onloadend = function () {
+      imageBase64 = reader.result
+    }
+    reader.readAsDataURL(file);
+  }
+
+  const submitTask = () => {
+    let currentJson = {}
+    currentJson['task_type'] = taskType
+    currentJson['task_parameters'] = {}
+    if (taskType === 1) {
+      currentJson['task_title'] = $('#lv_task_title').val()
+      currentJson['task_parameters']['experiment_type'] = $('#lv_experiment_type').val()
+      currentJson['task_parameters']['description'] = $('#lv_description').val()
+      currentJson['task_parameters']['optimization_steps'] = Number($('#lv_optimization_steps').val())
+      currentJson['task_parameters']['l2_lambda'] = Number($('#lv_l2_lambda').val())
+      currentJson['task_parameters']['id_lambda'] = Number($('#lv_id_lambda').val())
+      currentJson['task_parameters']['stylespace'] = $('#lv_stylespace').is(":checked")
+      currentJson['task_parameters']['create_video'] = $('#lv_create_video').is(":checked")
+    } else if (taskType == 2) {
+      currentJson['task_title'] = $('#lm_task_title').val()
+      currentJson['task_parameters']['edit_type'] = $('#lm_edit_type').val()
+    } else if (taskType == 3) {
+      currentJson['task_title'] = $('#gd_task_title').val()
+      currentJson['task_parameters']['mode'] = $('#gd_mode').val()
+      currentJson['task_parameters']['neutral'] = $('#gd_neutral').val()
+      currentJson['task_parameters']['target'] = $('#gd_target').val()
+      currentJson['task_parameters']['beta'] = Number($('#gd_beta').val())
+      currentJson['task_parameters']['alpha'] = Number($('#gd_alpha').val())
+    }
+    if (imageBase64 !== null) {
+      currentJson['image'] = imageBase64
+    }
+    console.log(currentJson)
+    $.ajax({
+      type: "POST",
+      url: "/api/v1/events",
+      async: false,
+      data: JSON.stringify(currentJson),
+      dataType: "json",
+      contentType: "application/json; charset=utf-8",
+      success: function (data) {
+        console.log(data)
+        $('#messageModal').find(".modal-title").text('Success')
+        $('#messageModal').find(".modal-body").html('<p>' + data.message + '</p>')
+        $('#messageModal').modal('show')
+        $("#dialog-comfirm-button").on("click", function () {
+          window.location.reload()
+        })
+      },
+      error: function (jqXHR) {
+        $('#messageModal').find(".modal-title").text("error")
+        $('#messageModal').find(".modal-body").html('<p>' + jqXHR.responseJSON.error + '</p>')
+        $('#messageModal').modal('show')
+      }
+    })
+  }
+</script>
+{% endblock %}
