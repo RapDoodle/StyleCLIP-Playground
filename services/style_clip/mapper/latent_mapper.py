@@ -24,7 +24,7 @@ def run_mapper(options, device):
 
     edit_type = options['edit_type'] #@param ['afro', 'angry', 'Beyonce', 'bobcut', 'bowlcut', 'curly hair', 'Hilary Clinton', 'Jhonny Depp', 'mohawk', 'purple hair', 'surprised', 'Taylor Swift', 'trump', 'Mark Zuckerberg']
     edit_id = meta_data[edit_type][0]
-    pretrained_model_path = os.path.join('.', 'services', 'style_clip', 'mapper', 'pretrained', f'{edit_id}.pt')
+    pretrained_model_path = os.path.join('.', 'services', 'style_clip', 'pretrained', 'mapper', f'{edit_id}.pt')
 
     ensure_checkpoint_exists(pretrained_model_path)
     n_images = 1 #@param
@@ -32,7 +32,7 @@ def run_mapper(options, device):
     args = {
         "mapper_output_path": options['mapper_output_path'],
         "work_in_stylespace": False,
-        "exp_dir": "results/",
+        "exp_dir": "results/", # TODO
         "checkpoint_path": pretrained_model_path,
         "couple_outputs": True,
         "mapper_type": "LevelsMapper",

@@ -20,7 +20,7 @@ def run_global_direction(options, device):
 
     model, preprocess = clip.load("ViT-B/32", device=device,jit=False)
 
-    module_pretrained_path = os.path.join('.', 'services', 'style_clip', 'global_directions', 'pretrained')
+    module_pretrained_path = os.path.join('.', 'services', 'style_clip', 'pretrained', 'global_directions')
     network_pkl = os.path.join(module_pretrained_path, 'model', f'{dataset_name}.pkl')
     device = torch.device(device)
     M=Manipulator()
