@@ -3,6 +3,7 @@ import time
 import json
 import argparse
 
+import torch
 import torchvision
 
 from core.startup import create_app
@@ -72,6 +73,10 @@ def run_task(task, device):
     task.save(commit=False)
     write_task_log(task.id, 'Done.', commit=False)
     db.session.commit()
+
+    # Release memory
+    if device != 'cpu':
+        torch.cuda.empty_cache()
 
 
 def reset_failed_tasks():
