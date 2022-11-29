@@ -4,23 +4,31 @@ from argparse import Namespace
 from ..utils import ensure_checkpoint_exists
 from ..mapper.scripts.inference import run
 
-def run_mapper(options, device):
+
+def get_meta_data():
     meta_data = {
-        'afro': ['afro', False, False, True], 
-        'angry': ['angry', False, False, True], 
-        'Beyonce': ['beyonce', False, False, False], 
-        'bobcut': ['bobcut', False, False, True], 
-        'bowlcut': ['bowlcut', False, False, True], 
-        'curly hair': ['curly_hair', False, False, True], 
-        'Hilary Clinton': ['hilary_clinton', False, False, False],
-        'Jhonny Depp': ['depp', False, False, False], 
-        'mohawk': ['mohawk', False, False, True],
-        'purple hair': ['purple_hair', False, False, False], 
-        'surprised': ['surprised', False, False, True], 
-        'Taylor Swift': ['taylor_swift', False, False, False],
-        'trump': ['trump', False, False, False], 
-        'Mark Zuckerberg': ['zuckerberg', False, False, False]
+        'afro': ['afro', False, False, True, 'Afro'], 
+        'angry': ['angry', False, False, True, 'Angry'], 
+        'smile': ['smile', False, False, True, 'Smile'], 
+        'Beyonce': ['beyonce', False, False, False, 'Beyonce'], 
+        'bobcut': ['bobcut', False, False, True, 'Bobcut'], 
+        'bowlcut': ['bowlcut', False, False, True, 'Bowlcut'], 
+        'curly hair': ['curly_hair', False, False, True, 'Curly hair'], 
+        'Hilary Clinton': ['hilary_clinton', False, False, False, 'Hilary Clinton'],
+        'Jhonny Depp': ['depp', False, False, False, 'Jhonny Depp'], 
+        'mohawk': ['mohawk', False, False, True, 'Mohawk'],
+        'purple hair': ['purple_hair', False, False, False, 'Purple hair'], 
+        'surprised': ['surprised', False, False, True, 'Surprised'], 
+        'Taylor Swift': ['taylor_swift', False, False, False, 'Taylor Swift'],
+        'trump': ['trump', False, False, False, 'Trump'], 
+        'Mark Zuckerberg': ['zuckerberg', False, False, False, 'Mark Zuckerberg'],
+        'jackie chan': ['jackie_chan', False, False, False, 'Jackie Chan']
     }
+    return meta_data
+
+
+def run_mapper(options, device):
+    meta_data = get_meta_data()
 
     edit_type = options['edit_type'] #@param ['afro', 'angry', 'Beyonce', 'bobcut', 'bowlcut', 'curly hair', 'Hilary Clinton', 'Jhonny Depp', 'mohawk', 'purple hair', 'surprised', 'Taylor Swift', 'trump', 'Mark Zuckerberg']
     edit_id = meta_data[edit_type][0]

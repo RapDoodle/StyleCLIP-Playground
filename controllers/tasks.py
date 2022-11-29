@@ -14,6 +14,7 @@ from models.user import ROLE_TYPE_USER
 from models.task import Task
 from utils.converter import to_int
 from utils.pagination import get_page_numbers
+from services.style_clip.mapper.latent_mapper import get_meta_data
 
 blueprint = Blueprint('tasks', __name__, template_folder='templates')
 
@@ -28,7 +29,8 @@ def tasks():
     return {
         'tasks': tasks,
         'pages': get_page_numbers(length=count, current=page, limit=page_size, show=8),
-        'current_page': str(page)
+        'current_page': str(page),
+        'latent_mapper_meta_info': get_meta_data()
     }
 
 

@@ -60,7 +60,7 @@ class Tasks(Resource):
 
         # Final commit
         db.session.commit()
-        return {'message': f'Successfully created task {task.id}'}, 201
+        return {'message': f'Successfully created.'}, 201
 
     @restricted_access(allowed=[ROLE_TYPE_USER, ROLE_TYPE_ADMIN], return_json=True)
     @excpetion_handler

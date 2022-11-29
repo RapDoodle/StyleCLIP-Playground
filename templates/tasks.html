@@ -186,20 +186,9 @@
                     <div class="col-md-6 col-sm-12">
                       <label>Edit Type</label>
                       <select class="form-control" id="lm_edit_type" name="lm_edit_type">
-                        <option value="afro">Afro</option>
-                        <option value="angry">Angry</option>
-                        <option value="Beyonce">Beyonce</option>
-                        <option value="bobcut">Bobcut</option>
-                        <option value="bowlcut">Bowlcut</option>
-                        <option value="curly hair">Curly hair</option>
-                        <option value="Hilary Clinton">Hilary Clinton</option>
-                        <option value="Jhonny Depp">Jhonny Depp</option>
-                        <option value="mohawk">Mohawk</option>
-                        <option value="purple hair">Purple Hair</option>
-                        <option value="surprised">Surprised</option>
-                        <option value="Taylor Swift">Taylor Swift</option>
-                        <option value="trump">Trump</option>
-                        <option value="Mark Zuckerberg">Mark Zuckerberg</option>
+                        {% for key, meta_info in data['latent_mapper_meta_info'].items() %}
+                        <option value="{{key}}">{{meta_info[4]}}</option>
+                        {% endfor %}
                       </select>
                     </div>
 

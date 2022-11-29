@@ -15,6 +15,8 @@ def get_path(type, filename=None):
         base_path = os.path.join('.', 'static', 'contents', 'latent')
     elif type == 'inference':
         base_path = os.path.join('.', 'static', 'contents', 'inference')
+    elif type == 'inference':
+        base_path = os.path.join('.', 'static', 'contents', 'inference')
     else:
         raise Exception('unknown path type')
     create_path_if_not_exists(base_path)
