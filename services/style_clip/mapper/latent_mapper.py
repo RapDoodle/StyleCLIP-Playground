@@ -22,7 +22,7 @@ def get_meta_data():
         'Taylor Swift': ['taylor_swift', False, False, False, 'Taylor Swift'],
         'trump': ['trump', False, False, False, 'Trump'], 
         'Mark Zuckerberg': ['zuckerberg', False, False, False, 'Mark Zuckerberg'],
-        'jackie chan': ['jackie_chan', False, False, False, 'Jackie Chan']
+        'jackie chan': ['jackie_chan', False, False, True, 'Jackie Chan']
     }
     return meta_data
 
