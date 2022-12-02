@@ -10,6 +10,7 @@ def get_meta_data():
         'afro': ['afro', False, False, True, 'Afro'], 
         'angry': ['angry', False, False, True, 'Angry'], 
         'smile': ['smile', False, False, True, 'Smile'], 
+        'laughing': ['laughing', False, False, True, 'Laughing'], 
         'Beyonce': ['beyonce', False, False, False, 'Beyonce'], 
         'bobcut': ['bobcut', False, False, True, 'Bobcut'], 
         'bowlcut': ['bowlcut', False, False, True, 'Bowlcut'], 
